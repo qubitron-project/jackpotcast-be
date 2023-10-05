@@ -174,6 +174,7 @@ class Banner(models.Model):
     subtitle = models.CharField(max_length=500)
     link = models.CharField(max_length=500)
     image_url = models.URLField(max_length=500, null=True, blank=True)
+    m_image_url = models.URLField(max_length=500, null=True, blank=True)
     order = models.IntegerField()
     type = models.CharField(max_length=45)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -196,4 +197,13 @@ class Point(models.Model):
     class Meta:
         managed = True
         db_table = 'points'
-    
+
+class Notice(models.Model):
+    title = models.CharField(max_length=500)
+    content = models.TextField()
+    type= models.CharField(max_length=45)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = "notices"

@@ -91,10 +91,10 @@ def create_playlist(ACCESS_TOKEN):
     data = {
         "snippet": {
             "title": "[원투차트] 플레이리스트",
-            "description": "원투차트에서 찜한 플레이리스트 입니다. https://chart.wantu.io 에서 더 많은 시리즈 콘텐츠를 확인해보세요",
+            "description": "원투차트에서 찜한 플레이리스트 입니다. https://chart.jackpotcast.io 에서 더 많은 시리즈 콘텐츠를 확인해보세요",
             "tags": [
-                "Wantu",
-                "Wantu chart",
+                "jackpotcast",
+                "jackpotcast chart",
                 "원투",
                 "원투 차트"
             ],
@@ -113,7 +113,7 @@ def create_playlist(ACCESS_TOKEN):
 #     "publishedAt": "2023-08-29T03:33:30Z",
 #     "channelId": "UC3sIqj8MMI_c3heXf0L5GIA",
 #     "title": "[원투차트] 플레이리스트",
-#     "description": "원투차트에서 찜한 플레이리스트 입니다. https://chart.wantu.io 에서 더 많은 시리즈 콘텐츠를 확인해보세요",
+#     "description": "원투차트에서 찜한 플레이리스트 입니다. https://chart.jackpotcast.io 에서 더 많은 시리즈 콘텐츠를 확인해보세요",
 #     "thumbnails": {
 #       "default": {
 #         "url": "https://i.ytimg.com/img/no_thumbnail.jpg",
@@ -135,7 +135,7 @@ def create_playlist(ACCESS_TOKEN):
 #     "defaultLanguage": "ko",
 #     "localized": {
 #       "title": "[원투차트] 플레이리스트",
-#       "description": "원투차트에서 찜한 플레이리스트 입니다. https://chart.wantu.io 에서 더 많은 시리즈 콘텐츠를 확인해보세요"
+#       "description": "원투차트에서 찜한 플레이리스트 입니다. https://chart.jackpotcast.io 에서 더 많은 시리즈 콘텐츠를 확인해보세요"
 #     }
 #   },
 #   "status": {

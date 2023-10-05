@@ -130,8 +130,8 @@ dmypy.json
 
 # jetbrain
 .idea/
-wantu-pedia
-wantu-chart-db.json
-wantu-chart.json
-wantu-chart.sql
+jackpotcast-pedia
+jackpotcast-db.json
+jackpotcast.json
+jackpotcast.sql
 .env

@@ -8,10 +8,10 @@ from django.db.models import Q, Avg
 from django.core.exceptions import ValidationError
 
 from users.utils import login_decorator
-from movies.models import Movie, MovieParticipant, Channel, Rating, MovieGenre, MovieEpisode, Episode, Genre, Country
+from movies.models import Movie, MovieParticipant, Channel, Rating, MovieGenre, MovieEpisode, Episode, Genre, Country, Banner, Notice
 from movies.serializers import EpisodeSerializer
 from django.shortcuts import render
-from atchapedia.utils.youtube import get_channel_info, get_video_details,get_playlist_info, get_comments, get_highlights, comment, convert_PT_to_time
+from jackpotcast.utils.youtube import get_channel_info, get_video_details,get_playlist_info, get_comments, get_highlights, comment, convert_PT_to_time
 from datetime import datetime
 from typing import Iterable
 from collections import namedtuple
@@ -45,8 +45,45 @@ def bulk_create_manytomany_relations(
         )
     getattr(model_from, field_name).through.objects.bulk_create(through_objs)
 
+class NoticeView(View):
+    def get(self, request):
+        notices = Notice.objects.all()
+        notice_list = [{
+            "id": notice.id,
+            "title" : notice.title,
+            "content" : notice.content,
+            "type" : notice.type,
+            "created_at" : notice.created_at,
+            "updated_at" : notice.updated_at,
+        } for notice in notices]
+
+        return JsonResponse({"results" : notice_list}, status=200)
+
+class BannerView(View):
+    def get(self, request):
+        banners = Banner.objects.all()
+        type = request.GET.get('type', None)
+
+        if type:
+            banners = banners.filter(type=type)     
+
+        banner_list = [{
+            "id": banner.id,
+            "title" : banner.title,
+            "subtitle" : banner.subtitle,
+            "link" : banner.link,
+            "image_url" : banner.image_url,
+            "m_image_url" : banner.m_image_url,
+            "order" : banner.order,
+            "type" : banner.type,
+            "created_at" : banner.created_at,
+            "updated_at" : banner.updated_at,
+        } for banner in banners]
+
+        return JsonResponse({"results" : banner_list}, status=200)
+
 class ChannelView(View):
-    @method_decorator(cache_page(60*60))
+    @method_decorator(cache_page(60*60*24))
     def get(self, request):
         OFFSET = 0
         LIMIT  = 16
@@ -69,7 +106,7 @@ class ChannelView(View):
         # return HttpResponse('<html><body> channel ... cached</body></html>')
 
 class ChannelDetailView(View):
-    @method_decorator(cache_page(60*60))
+    @method_decorator(cache_page(60*60*24))
     def get(self, request, channel_id):
         try:
             if not Channel.objects.filter(id=channel_id).exists():
@@ -108,7 +145,7 @@ class ChannelDetailView(View):
 
 
 class MovieView(View): 
-    @method_decorator(cache_page(60*60))
+    @method_decorator(cache_page(60*60*24))
     def get(self,request): 
         search = request.GET.get('search', '')
         country_name  = request.GET.get("country")
@@ -208,7 +245,7 @@ class RateView(View):
 
 class GenreMovieView(View):
 
-    @method_decorator(cache_page(60*60))
+    @method_decorator(cache_page(60*60*24))
     def get(self, request):  
         OFFSET = 0
         LIMIT  = 16
@@ -252,7 +289,7 @@ class GenreMovieView(View):
 
 class MovieDetailView(View):
 
-    @method_decorator(cache_page(60*60))
+    @method_decorator(cache_page(60*60*24))
     def get(self, request, movie_id):
         try:
             if not Movie.objects.filter(id=movie_id).exists():
@@ -325,7 +362,7 @@ class CommentView(View):
         return JsonResponse({"result" :comment_list}, status=200)
 
 class EpisodeMovieView(View):
-    @method_decorator(cache_page(60*15))
+    @method_decorator(cache_page(60*60*24))
     def get(self, request, movie_id):
         episode_ids = MovieEpisode.objects.filter(movie_id=movie_id).values_list('episode_id', flat=True)
         episode_list = Episode.objects.filter(pk__in=episode_ids).exclude(name='Private video')
@@ -546,14 +583,3 @@ def episode_upload_from_csv(request):
         else:
             messages.info(request,"성공적으로 등록되었습니다.")
             return redirect("member_list")
-
-
-
-@cache_page(60 * 15)
-def cached(request):
-    movies = Movie.objects.all()
-    return HttpResponse('<html><body>{0} movies ... cached</body></html>'.format(len(movies)))
-
-def cacheless(request):
-    movies = Movie.objects.all()
-    return HttpResponse('<html><body>{0} movies ... cacheless</body></html>'.format(len(movies)))

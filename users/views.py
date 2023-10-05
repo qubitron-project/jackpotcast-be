@@ -10,9 +10,9 @@ from django.http.response   import HttpResponse, JsonResponse
 from users.utils            import login_decorator
 from users.models           import User
 from movies.models          import Rating, WishList
-from atchapedia.settings      import SECRET_KEY
+from jackpotcast.settings      import SECRET_KEY
 
-from atchapedia.utils.youtube import convert_PT_to_time
+from jackpotcast.utils.youtube import convert_PT_to_time
 class SignUpView(View):
     def post(self, request):
         try:

@@ -2,7 +2,7 @@ import jwt
 
 from django.http      import JsonResponse
 
-from atchapedia.settings      import SECRET_KEY
+from jackpotcast.settings      import SECRET_KEY
 from users.models     import User
 
 

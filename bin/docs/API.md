@@ -1,60 +1,65 @@
-
 # API Documentation
 
 ## 기본사항
- - API HOST: `http://backend.wantu.io/`
- - GET Request: 요청 Parameter는 `Query string` 형식을 기본전제로 합니다.
- - POST Request: 요청 Parameter는 `Request body`에 `application/json` 형식을 기본전제로 합니다.
- - POST Request 요청시 body의 크기가 250MB를 넘을 수 없습니다.
- - `HTTP status code`로 request의 상태를 나타냅니다. (응답코드 설명 참고)
+
+- API HOST: `http://backend.jackpotcast.io/`
+- GET Request: 요청 Parameter는 `Query string` 형식을 기본전제로 합니다.
+- POST Request: 요청 Parameter는 `Request body`에 `application/json` 형식을 기본전제로 합니다.
+- POST Request 요청시 body의 크기가 250MB를 넘을 수 없습니다.
+- `HTTP status code`로 request의 상태를 나타냅니다. (응답코드 설명 참고)
 
 # API
 
 ## 0. image 업로드 API
+
 ### POST /api/v1/s3/upload/image
 
-*Request*
+_Request_
+
 ```
 headers:  {"enctype" : "multipart/form-data"}
 body: form-data =>  key: file   value: 파일선택
 ```
 
-*Response*
+_Response_
 
-*Example(Response)*
+_Example(Response)_
+
 ```
 {
-    "url": "https://wantu-static.s3.ap-northeast-2.amazonaws.com/image/image-2021-09-14-833117.png"
+    "url": "https://jackpotcast-static.s3.ap-northeast-2.amazonaws.com/image/image-2021-09-14-833117.png"
 }
 ```
 
 ## 1. 이메일 중복체크 API
+
 ### POST /api/v1/email-duplicate-check
 
-*Request*
-| key | type   | 설명 |
+_Request_
+| key | type | 설명 |
 | --- | :----: | --- |
 | _email_ | `String` | 중복체크하려는 email 입니다. |
 
-*Example(Request)*
+_Example(Request)_
+
 ```
 {
     "email":"internet@kaist.ac.kr"
 }
 ```
 
-*Response*
+_Response_
 | http status code | 설명 |
 | --- | --- |
 | _200_ | response body의 data를 확인하세요. |
 | _400_ | 잘못된 요청입니다. response body의 detail을 읽어보세요. |
 
-
 ## 2. 회원가입 API
+
 ### POST /api/v1/user/profile
 
-*Request*
-| key | type   | 설명 |
+_Request_
+| key | type | 설명 |
 | --- | :----: | --- |
 | _email_ `(optional)` | `String` | 회원가입하려는 계정의 email 입니다. |
 | _name_ | `String` | 회원가입하려는 사용자의 이름 입니다. |
@@ -68,8 +73,8 @@ body: form-data =>  key: file   value: 파일선택
 | _instagram_ `(optional)` | `String` | 회원가입하려는 계정의 instagram SNS link 입니다. |
 | _personal_site_ `(optional)` | `String` | 회원가입하려는 계정의 블로그, 개인사이트 입니다. |
 
+_Example(Request)_
 
-*Example(Request)*
 ```
 {
     "name":"테스트",
@@ -78,26 +83,26 @@ body: form-data =>  key: file   value: 파일선택
 }
 ```
 
-*Response*
+_Response_
 | http status code | 설명 |
 | --- | --- |
 | _201_ | 성공적으로 회원가입 되었습니다. |
 | _400_ | response body의 detail을 읽어보세요. |
 
-
 ## 3. 로그인 API
+
 ### POST /api/v1/user/login
 
-*Request*
-| key | type   | 설명 |
+_Request_
+| key | type | 설명 |
 | --- | :----: | --- |
-| _phone_number_ | `String` | 로그인하려는 계정의 phone_number 입니다. |
-| _password_ `(optional)` | `String` | 로그인하려는 계정의 비밀번호입니다. (`password` or `sns` 둘중 하나는 필수입니다.)|
+| _phone_number_ | `String` | 로그인하려는 계정의 phone*number 입니다. |
+| \_password* `(optional)` | `String` | 로그인하려는 계정의 비밀번호입니다. (`password` or `sns` 둘중 하나는 필수입니다.)|
 | _sns_ `(optional)` | `String` | sns 연동 로그인하는 경우 채워지는 field입니다. [`google`, `facebook`, `kakao`, `naver`]|
 | _keep_logged_in_ `(optional)` | `Boolean` | 로그인 유지 여부입니다. |
 
+_Example(Request)_
 
-*Example(Request)*
 ```
 {
     "phone_number":"01085151619",
@@ -105,27 +110,29 @@ body: form-data =>  key: file   value: 파일선택
 }
 ```
 
-*Response*
+_Response_
 | http status code | 설명 |
 | --- | --- |
 | _200_ | 성공적으로 로그인 되었습니다. |
 | _400_ | 잘못된 phone_number 또는 password 또는 sns 입니다. response body의 detail을 읽어보세요. |
 
-
 ## 4. 내 회원정보 받기 API
+
 ### GET /api/v1/user/profile
 
-*Request*
+_Request_
+
 ```
 필요한 정보가 없습니다.
 ```
 
-*Response*
-| key | type  | 설명 |
+_Response_
+| key | type | 설명 |
 | --- | :---: | --- |
 | _data_ | `User Detail Object` | 자세한 회원 정보를 담고있는 Object입니다. |
 
-*Example(Response)*
+_Example(Response)_
+
 ```
 {
     "data": {
@@ -146,12 +153,12 @@ body: form-data =>  key: file   value: 파일선택
 }
 ```
 
-
 ## 5. 회원정보수정 API
+
 ### PUT /api/v1/user/profile
 
-*Request*
-| key | type   | 설명 |
+_Request_
+| key | type | 설명 |
 | --- | :----: | --- |
 | _name_ `(optional)` | `String` | 새로운 이름 입니다. |
 | _password_ `(optional)` | `String` | 새로운 비밀번호 입니다. |
@@ -165,7 +172,8 @@ body: form-data =>  key: file   value: 파일선택
 | _bank_ `(optional)` | `String` | 회원님의 은행 종류 입니다. |
 | _bank_account_ `(optional)` | `String` | 회원님의 은행 계좌번호 입니다. |
 
-*Example(Request)*
+_Example(Request)_
+
 ```
 {
     "hashtags": ["와인러버", "레드와인"],
@@ -173,53 +181,54 @@ body: form-data =>  key: file   value: 파일선택
 }
 ```
 
-*Response*
+_Response_
 | http status code | 설명 |
 | --- | --- |
 | _202_ | 성공적으로 변경되었습니다. |
 
-
 ## 6. 회원정보삭제 API
+
 ### DELETE /api/v1/user/int:user_id
 
-*Request*
+_Request_
+
 ```
 필요한 정보가 없습니다.
 ```
 
-*Response*
+_Response_
 | http status code | 설명 |
 | --- | --- |
 | _202_ | 성공적으로 삭제 되었습니다. |
 | _400_ | reponse body의 detail을 읽어보세요. |
 | _403_ | 권한이 없습니다. |
 
-
 ## 7. feed 만들기 API
+
 ### POST /api/v1/feed
 
-*Request*
+_Request_
 
-| key | type   | 설명 |
-| --- | :----: | --- |
-| _title_ | `String` | Cheeting의 제목 입니다. |
-| _start_at_ | `String` | Cheeting의 시작 날짜와 시간 입니다. `yyyy-mm-dd hh:mm:ss` 형식입니다. |
-| _place_name_ | `String` | Cheeting의 장소 입니다.|
-| _latitude_ | `Float` | Cheeting 장소의 위도 입니다.|
-| _longitude_ | `Float` | Cheeting 장소의 경도 입니다.|
-| _city_ | `String` | Cheeting 장소의 시/도 입니다. |
-| _county_ | `String` | Cheeting 장소의 군/구 입니다. |
-| _people_limit_ | `Integer` | Cheeting의 모집하려는 인원 입니다. |
-| _participation_fee_ | `Integer` | Cheeting의 참가비 입니다. |
-| _open_chat_link_ | `String` | Cheeting 오픈 카톡 방 링크입니다. |
-| _hashtags_ | `String Array` | Cheeting 해쉬태그들 입니다. |
-| _wines_ | `Wine Object Array` | Wine들 정보를 담고있는 Array 입니다. |
-| _introduction_ `(optional)` | `String` | Cheeting 소개글 입니다. |
-| _image_url_ `(optional)` | `String` | Cheeting 썸네일 image url 입니다. |
-| _place_detail_ `(optional)` | `String` | Cheeting 장소의 자세한 내용 입니다. |
+| key                         |        type         | 설명                                                                  |
+| --------------------------- | :-----------------: | --------------------------------------------------------------------- |
+| _title_                     |      `String`       | Cheeting의 제목 입니다.                                               |
+| _start_at_                  |      `String`       | Cheeting의 시작 날짜와 시간 입니다. `yyyy-mm-dd hh:mm:ss` 형식입니다. |
+| _place_name_                |      `String`       | Cheeting의 장소 입니다.                                               |
+| _latitude_                  |       `Float`       | Cheeting 장소의 위도 입니다.                                          |
+| _longitude_                 |       `Float`       | Cheeting 장소의 경도 입니다.                                          |
+| _city_                      |      `String`       | Cheeting 장소의 시/도 입니다.                                         |
+| _county_                    |      `String`       | Cheeting 장소의 군/구 입니다.                                         |
+| _people_limit_              |      `Integer`      | Cheeting의 모집하려는 인원 입니다.                                    |
+| _participation_fee_         |      `Integer`      | Cheeting의 참가비 입니다.                                             |
+| _open_chat_link_            |      `String`       | Cheeting 오픈 카톡 방 링크입니다.                                     |
+| _hashtags_                  |   `String Array`    | Cheeting 해쉬태그들 입니다.                                           |
+| _wines_                     | `Wine Object Array` | Wine들 정보를 담고있는 Array 입니다.                                  |
+| _introduction_ `(optional)` |      `String`       | Cheeting 소개글 입니다.                                               |
+| _image_url_ `(optional)`    |      `String`       | Cheeting 썸네일 image url 입니다.                                     |
+| _place_detail_ `(optional)` |      `String`       | Cheeting 장소의 자세한 내용 입니다.                                   |
 
+_Example(Request)_
 
-*Example(Request)*
 ```
 {
     "title": "치팅 함께해요~",
@@ -244,24 +253,25 @@ body: form-data =>  key: file   value: 파일선택
 }
 ```
 
-*Response*
+_Response_
 
-| http status code | 설명 |
-| --- | --- |
-| _201_ | 성공적으로 생성 되었습니다. |
-| _400_ | response body의 detail을 읽어보세요. |
-
+| http status code | 설명                                 |
+| ---------------- | ------------------------------------ |
+| _201_            | 성공적으로 생성 되었습니다.          |
+| _400_            | response body의 detail을 읽어보세요. |
 
 ## 8. feed 리스트 보기 API
+
 ### GET /api/v1/feed
 
-*Response*
-| key | type  | 설명 |
+_Response_
+| key | type | 설명 |
 | --- | :---: | --- |
 | _data_ | `Feed Summury Object Array` | 요약된 Feed 정보를 담고있는 Object의 Array 입니다. |
 | _total_ | `Integer` | pagenation을 위한 전체 개수입니다. |
 
-*Example(Response)*
+_Example(Response)_
+
 ```
 {
   "data": [
@@ -311,23 +321,26 @@ body: form-data =>  key: file   value: 파일선택
 }
 ```
 
-
 ## 9. My Feed API
+
 ### GET /api/v1/feed/user/<int:user_id>
+
 ### 내가 만든 Feed 리스트
 
-*Example(Request)*
+_Example(Request)_
+
 ```
 /api/v1/feed/user/30
 ```
 
-*Response*
-| key | type  | 설명 |
+_Response_
+| key | type | 설명 |
 | --- | :---: | --- |
 | _data_ | `Feed Detail Object` | 자세한 Feed 정보를 담고있는 Object 입니다. |
 | _total_ | `Integer` | pagenation을 위한 전체 개수입니다. |
 
-*Example(Response)*
+_Example(Response)_
+
 ```
 {
     "data": [
@@ -377,16 +390,17 @@ body: form-data =>  key: file   value: 파일선택
 }
 ```
 
-
 ## 10. Feed 자세하게 보기 API
+
 ### GET /api/v1/feed/int:feed_id
 
-*Response*
-| key | type  | 설명 |
+_Response_
+| key | type | 설명 |
 | --- | :---: | --- |
 | _data_ | `Feed Detail Object` | 자세한 Feed 정보를 담고있는 Object 입니다. |
 
-*Example(Response)*
+_Example(Response)_
+
 ```
 {
     "data": [
@@ -435,22 +449,24 @@ body: form-data =>  key: file   value: 파일선택
 }
 ```
 
-
 ## 11. feed 글 리스트 Search API
+
 ### GET /api/v1/feed?search=배기&
 
-*Example(Request)*
+_Example(Request)_
+
 ```
 /api/v1/feed?search=배기&
 ```
 
-*Response*
-| key | type  | 설명 |
+_Response_
+| key | type | 설명 |
 | --- | :---: | --- |
 | _data_ | `Feed Object Array` | Feed 글 정보를 담고있는 Object의 Array 입니다. |
 | _total_ | `Integer` | pagenation을 위한 전체 개수입니다. |
 
-*Example(Response)*
+_Example(Response)_
+
 ```
 {
     "data": [
@@ -500,38 +516,38 @@ body: form-data =>  key: file   value: 파일선택
 }
 ```
 
-
 ## 12. feed 글 수정 API
+
 ### PUT /api/v1/feed/int:feed_id
 
-*Request*
-| key | type   | 설명 |
+_Request_
+| key | type | 설명 |
 | --- | :----: | --- |
 | _hashtag_ | `String Array` | 해시태그들 입니다. |
 | _content_ | `String` | 상세 설명 입니다. |
-| _thumbnail_image_url_ | `String` | thumbnail_url 입니다. |
-| _teaser_url_ | `String` | teaser_url 입니다. |
-| _video_url_ | `String` | video_url 입니다. |
-| _title_ | `String` | 제목 입니다. |
-| _image_urls_ | `String Array` | image_urls 입니다. |
-| _introduction_ | `String` | 부연설명부 입니다. |
+| _thumbnail_image_url_ | `String` | thumbnail*url 입니다. |
+| \_teaser_url* | `String` | teaser*url 입니다. |
+| \_video_url* | `String` | video*url 입니다. |
+| \_title* | `String` | 제목 입니다. |
+| _image_urls_ | `String Array` | image*urls 입니다. |
+| \_introduction* | `String` | 부연설명부 입니다. |
 | _schedule_ | `String` | 제작 및 업로드 일정 설명 입니다. |
 | _financial_plan_ | `String` | 예산 상세 설명 입니다. |
 | _start_at_ | `String` | 시작 날짜와 시간 입니다. `yyyy-mm-dd hh:mm:ss` 형식입니다. |
 | _end_at_ | `String` | 종료 날짜와 시간 입니다. `yyyy-mm-dd hh:mm:ss` 형식입니다. |
 | _release_at_ | `String` | release 날짜와 시간 입니다. `yyyy-mm-dd hh:mm:ss` 형식입니다. |
 | _status_ | `String` | 상태 입니다.|
-| _goal_amount_ | `Integer` | goal_amount 입니다.|
-| _minimum_amount_ | `Integer` | minimum_amount 입니다.|
-| _maximum_amount_ | `Integer` | maximum_amount 입니다.|
-| _total_nft_ | `Integer` | total_nft 입니다.|
-| _nft_benefit_ | `String` | NFT 혜택 설명 입니다.|
-| _nft_urls_ | `String Array` | nft_urls 입니다.|
-| _yield_amount_ | `Float` | yield_amount 입니다.|
-| _contract_address_ | `String` | contract_address 입니다.|
+| _goal_amount_ | `Integer` | goal*amount 입니다.|
+| \_minimum_amount* | `Integer` | minimum*amount 입니다.|
+| \_maximum_amount* | `Integer` | maximum*amount 입니다.|
+| \_total_nft* | `Integer` | total*nft 입니다.|
+| \_nft_benefit* | `String` | NFT 혜택 설명 입니다.|
+| _nft_urls_ | `String Array` | nft*urls 입니다.|
+| \_yield_amount* | `Float` | yield*amount 입니다.|
+| \_contract_address* | `String` | contract_address 입니다.|
 
+_Example(Request)_
 
-*Example(Request)*
 ```
 {
     "hashtags": [
@@ -542,44 +558,46 @@ body: form-data =>  key: file   value: 파일선택
 }
 ```
 
-*Response*
+_Response_
 | http status code | 설명 |
 | --- | --- |
 | _202_ | 성공적으로 수정 되었습니다. |
 | _400_ | response body의 detail을 읽어보세요. |
 | _403_ | 권한이 없습니다. 자신이 만든 게시글이 아닙니다. |
 
-
 ## 13. feed 글 삭제 API
+
 ### DELETE /api/v1/feed/int:feed_id
 
-*Response*
+_Response_
 | http status code | 설명 |
 | --- | --- |
 | _202_ | 성공적으로 삭제 되었습니다. |
 | _400_ | response body의 detail을 읽어보세요. |
 | _403_ | 권한이 없습니다. 자신이 만든 게시글이 아닙니다. |
 
-
 ## 14. 댓글 리스트 보기 API
+
 ### GET /api/v1/common/reply
 
-*Request*
-| key | type   | 설명 |
+_Request_
+| key | type | 설명 |
 | --- | :----: | --- |
 | _feed_id_ | `Integer` | 댓글리스트를 보고싶은 Feed id를 입력합니다. |
 
-*Example(Request)*
+_Example(Request)_
+
 ```
 /api/v1/common/reply?feed_id=1
 ```
 
-*Response*
-| key | type  | 설명 |
+_Response_
+| key | type | 설명 |
 | --- | :---: | --- |
 | _data_ | `Reply Object Array` | Reply 정보를 담고있는 Object의 Array 입니다. |
 
-*Example(Response)*
+_Example(Response)_
+
 ```
 {
     "data": [
@@ -633,15 +651,17 @@ body: form-data =>  key: file   value: 파일선택
 ```
 
 ## 15. 댓글 추가 API
+
 ### POST /api/v1/common/reply
 
-*Request*
-| key | type   | 설명 |
+_Request_
+| key | type | 설명 |
 | --- | :----: | --- |
 | _feed_id_ | `Integer` | 댓글 달고싶은 Feed id를 입력합니다. |
 | _text_ | `String` | 추가하려는 댓글 입니다. |
 
-*Example(Request)*
+_Example(Request)_
+
 ```
 {
     "feed_id": 1,
@@ -649,63 +669,67 @@ body: form-data =>  key: file   value: 파일선택
 }
 ```
 
-*Response*
+_Response_
 | http status code | 설명 |
 | --- | --- |
 | _201_ | 성공적으로 생성 되었습니다. |
 | _400_ | response body의 detail을 읽어보세요. |
 
-
 ## 16. 댓글 수정 API
+
 ### PUT /api/v1/common/reply/int:reply_id
 
-*Request*
-| key | type   | 설명 |
+_Request_
+| key | type | 설명 |
 | --- | :----: | --- |
 | _text_ | `String` | 수정된 문구 입니다. |
 
-*Example(Request)*
+_Example(Request)_
+
 ```
 {
 	"text": "edit reply"
 }
 ```
 
-*Response*
+_Response_
 | http status code | 설명 |
 | --- | --- |
 | _202_ | 성공적으로 수정 되었습니다. |
 
-
 ## 17. 댓글 삭제 API
+
 ### DELETE /api/v1/common/reply/int:reply_id
 
-*Request*
+_Request_
+
 ```
 필요한 정보가 없습니다.
 ```
 
-*Response*
+_Response_
 | http status code | 설명 |
 | --- | --- |
 | _202_ | 성공적으로 삭제 되었습니다. |
 
-
 ## 18. 대댓글 리스트 보기 API
+
 ### GET /api/v1/common/reply/int:reply_id/nested_reply
 
-*Example(Request)*
+_Example(Request)_
+
 ```
 /api/v1/common/reply/5/nested_reply
 ```
 
-*Response*
-| key | type  | 설명 |
+_Response_
+| key | type | 설명 |
 | --- | :---: | --- |
 | _data_ | `Nested Reply Object Array` | Nested Reply 정보를 담고있는 Object의 Array 입니다. |
 | _total_ | `Integer` | pagenation을 위한 전체 개수입니다. |
 
-*Example(Response)*
+_Example(Response)_
+
 ```
 {
     "data": [
@@ -727,105 +751,111 @@ body: form-data =>  key: file   value: 파일선택
 }
 ```
 
-*Response*
+_Response_
 | http status code | 설명 |
 | --- | --- |
 | _200_ | 성공적으로 조회 되었습니다. |
 
-
 ## 19. 대댓글 추가 API
+
 ### POST /api/v1/common/reply/int:reply_id/nested_reply
 
-*Request*
-| key | type   | 설명 |
+_Request_
+| key | type | 설명 |
 | --- | :----: | --- |
 | _text_ | `String` | 추가하려는 대댓글 입니다. |
 
-*Example(Request)*
+_Example(Request)_
+
 ```
 {
     "text": "nested reply1"
 }
 ```
 
-*Response*
+_Response_
 | http status code | 설명 |
 | --- | --- |
 | _201_ | 성공적으로 생성 되었습니다. |
 | _400_ | response body의 detail을 읽어보세요. |
 
-
 ## 20. 대댓글 수정 API
+
 ### PUT /api/v1/common/reply/int:reply_id/nested_reply/int:nested_reply_id
 
-*Request*
-| key | type   | 설명 |
+_Request_
+| key | type | 설명 |
 | --- | :----: | --- |
 | _text_ | `String` | 수정된 문구 입니다. |
 
-*Example(Request)*
+_Example(Request)_
+
 ```
 {
 	"text": "edit nested reply"
 }
 ```
 
-*Response*
+_Response_
 | http status code | 설명 |
 | --- | --- |
 | _202_ | 성공적으로 수정 되었습니다. |
 | _400_ | response body의 detail을 읽어보세요. |
 
-
 ## 21. 대댓글 삭제 API
+
 ### DELETE /api/v1/common/reply/int:reply_id/nested_reply/int:nested_reply_id
 
-*Request*
+_Request_
+
 ```
 필요한 정보가 없습니다.
 ```
 
-*Response*
+_Response_
 | http status code | 설명 |
 | --- | --- |
 | _202_ | 성공적으로 삭제되었습니다. |
 | _400_ | response body의 detail을 읽어보세요. |
 
-
 ## 22. 좋아요 등록/취소 API
+
 ### POST /api/v1/common/like
 
-*Request*
-| key | type   | 설명 |
+_Request_
+| key | type | 설명 |
 | --- | :----: | --- |
 | _feed_id_ `(optional)` | `Integer` | 좋아요(등록/취소)하려는 feed의 id 입니다. |
 | _community_id_ `(optional)` | `Integer` | 좋아요(등록/취소)하려는 community의 id 입니다. |
 | _reply_id_ `(optional)` | `Integer` | 좋아요(등록/취소)하려는 댓글의 id 입니다. |
 | _nested_reply_id_ `(optional)` | `Integer` | 좋아요(등록/취소)하려는 대댓글의 id 입니다. |
 
-*Example(Request)*
+_Example(Request)_
+
 ```
 {
 	"reply_id": 3
 }
 ```
 
-*Response*
+_Response_
 | http status code | 설명 |
 | --- | --- |
 | _202_ | 성공적으로 (좋아요 등록/ 좋아요 취소) 되었습니다. |
 | _400_ | response body의 detail을 읽어보세요. |
 
-
 ## 23. 좋아요 가져오기 API
+
 ### GET /api/v1/common/like
 
-*Request*
+_Request_
+
 ```
 필요한 정보가 없습니다.
 ```
 
-*Example(Response)*
+_Example(Response)_
+
 ```
 {
     "data": [
@@ -841,44 +871,47 @@ body: form-data =>  key: file   value: 파일선택
 }
 ```
 
-*Response*
+_Response_
 | http status code | 설명 |
 | --- | --- |
 | _200_ | 성공적으로 조회 되었습니다. |
 
-
 ## 24. 팔로우 등록/취소 API
+
 ### POST /api/v1/following/user/int:user_id
 
-*Request*
-| key | type   | 설명 |
+_Request_
+| key | type | 설명 |
 | --- | :----: | --- |
 | _follow_user_id_ `(optional)` | `Integer` | 팔로우(등록/취소)하려는 유저의 id 입니다. |
 | _hashtag_id_ `(optional)` | `Integer` | 팔로우(등록/취소)하려는 해시태그의 id 입니다. |
 
-*Example(Request)*
+_Example(Request)_
+
 ```
 {
 	"follow_user_id": 4
 }
 ```
 
-*Response*
+_Response_
 | http status code | 설명 |
 | --- | --- |
 | _202_ | 성공적으로 (팔로우 등록/ 팔로우 취소) 되었습니다. |
 | _400_ | response body의 detail을 읽어보세요. |
 
-
 ## 25. 팔로워 정보 API
+
 ### GET /api/v1/follower/user/int:user_id
 
-*Request*
+_Request_
+
 ```
 필요한 정보가 없습니다.
 ```
 
-*Example(Response)*
+_Example(Response)_
+
 ```
 {
     "data": [
@@ -895,21 +928,23 @@ body: form-data =>  key: file   value: 파일선택
 }
 ```
 
-*Response*
+_Response_
 | http status code | 설명 |
 | --- | --- |
 | _200_ | 성공적으로 조회 되었습니다. |
 
-
 ## 26. 팔로잉 정보 API
+
 ### GET /api/v1/following/user/int:user_id
 
-*Request*
+_Request_
+
 ```
 필요한 정보가 없습니다.
 ```
 
-*Example(Response)*
+_Example(Response)_
+
 ```
 {
     "data": [
@@ -926,43 +961,46 @@ body: form-data =>  key: file   value: 파일선택
 }
 ```
 
-*Response*
+_Response_
 | http status code | 설명 |
 | --- | --- |
 | _200_ | 성공적으로 조회 되었습니다. |
 
-
 ## 27. 재생 카운트 추가 API
+
 ### POST /api/v1/common/play
 
-*Request*
-| key | type   | 설명 |
+_Request_
+| key | type | 설명 |
 | --- | :----: | --- |
 | _feed_id_ | `Integer` | 재생 카운트를 추가하려는 feed의 id 입니다. |
 
-*Example(Request)*
+_Example(Request)_
+
 ```
 {
 	"feed_id": 4
 }
 ```
 
-*Response*
+_Response_
 | http status code | 설명 |
 | --- | --- |
 | _202_ | 성공적으로 추가 되었습니다. |
 | _400_ | response body의 detail을 읽어보세요. |
 
-
 ## 28. 재생 카운트 조회 API
+
 ### GET /api/v1/common/play/feed/int:feed_id
 
-*Request*
+_Request_
+
 ```
 필요한 정보가 없습니다.
 ```
 
-*Example(Response)*
+_Example(Response)_
+
 ```
 {
     "data": [
@@ -979,22 +1017,24 @@ body: form-data =>  key: file   value: 파일선택
 }
 ```
 
-*Response*
+_Response_
 | http status code | 설명 |
 | --- | --- |
 | _202_ | 성공적으로 추가 되었습니다. |
 | _400_ | response body의 detail을 읽어보세요. |
 
-
 ## 29. 피드 투자 조회 API
+
 ### GET /api/v1/feed/int:feed_id/investment
 
-*Request*
+_Request_
+
 ```
 필요한 정보가 없습니다.
 ```
 
-*Example(Response)*
+_Example(Response)_
+
 ```
 {
     "data": {
@@ -1014,58 +1054,61 @@ body: form-data =>  key: file   value: 파일선택
 }
 ```
 
-*Response*
+_Response_
 | http status code | 설명 |
 | --- | --- |
 | _200_ | 성공적으로 조회 되었습니다. |
 
-
 ## 30. 피드 투자 API
+
 ### POST /api/v1/common/investment/int:feed_id
 
-*Request*
-| key | type   | 설명 |
+_Request_
+| key | type | 설명 |
 | --- | :----: | --- |
 | _amount_ | `Integer` | 투자하려는 금액입니다. |
 
-*Example(Request)*
+_Example(Request)_
+
 ```
 {
     "amount": 4000,
 }
 ```
 
-*Response*
+_Response_
 | http status code | 설명 |
 | --- | --- |
 | _202_ | 성공적으로 투자 되었습니다. |
 | _400_ | response body의 detail을 읽어보세요. |
 
-
 ## 31. 피드 투자 철회 API
+
 ### DELETE /api/v1/common/investment/int:feed_id
 
-*Request*
+_Request_
+
 ```
 필요한 정보가 없습니다.
 ```
 
-*Response*
+_Response_
 | http status code | 설명 |
 | --- | --- |
 | _202_ | 성공적으로 삭제 되었습니다. |
 
-
 ## 32. 예치금 입출금 API
+
 ### POST /api/v1/common/deposit
 
-*Request*
-| key | type   | 설명 |
+_Request_
+| key | type | 설명 |
 | --- | :----: | --- |
 | _type_ | `String` | 입금, 출금 구분입니다. |
 | _amount_ | `Integer` | 입출금하려는 금액입니다. |
 
-*Example(Request)*
+_Example(Request)_
+
 ```
 {
     "type": "DEPOSIT",
@@ -1073,44 +1116,47 @@ body: form-data =>  key: file   value: 파일선택
 }
 ```
 
-*Response*
+_Response_
 | http status code | 설명 |
 | --- | --- |
 | _200_ | 성공적으로 생성 되었습니다. |
 | _400_ | response body의 detail을 읽어보세요. |
 
-
 ## 33. 예치금 상태변경 API
+
 ### PUT /api/v1/common/deposit/int:deposit_id
 
-*Request*
-| key | type   | 설명 |
+_Request_
+| key | type | 설명 |
 | --- | :----: | --- |
 | _status_ | `String` | 예치금 상태 입니다. |
 
-*Example(Request)*
+_Example(Request)_
+
 ```
 {
     "status": "CONFIRM"
 }
 ```
 
-*Response*
+_Response_
 | http status code | 설명 |
 | --- | --- |
 | _200_ | 성공적으로 수정 되었습니다. |
 | _400_ | response body의 detail을 읽어보세요. |
 
-
 ## 34. 예치금 조회 API
+
 ### GET /api/v1/common/deposit/int:feed_id
 
-*Request*
+_Request_
+
 ```
 필요한 정보가 없습니다.
 ```
 
-*Example(Response)*
+_Example(Response)_
+
 ```
 {
     "data": [
@@ -1136,54 +1182,57 @@ body: form-data =>  key: file   value: 파일선택
 }
 ```
 
-*Response*
+_Response_
 | http status code | 설명 |
 | --- | --- |
 | _200_ | 성공적으로 조회 되었습니다. |
 
-
 ## 35. feed 상태 수정 API
+
 ### PUT /api/v1/feed/int:feed_id/status
 
-*Request*
-| key | type   | 설명 |
+_Request_
+| key | type | 설명 |
 | --- | :----: | --- |
-| _status_ | `String` |  feed 상태 입니다. |
+| _status_ | `String` | feed 상태 입니다. |
 
-*Status 상태 정리*
+_Status 상태 정리_
 | status | 설명 |
 | --- | :----: | --- |
-| _PENDING_ |  임시저장 상태 or 프로젝트가 생성되기 전 |
-| _OPEN_ |  프로젝트 생성 이후 or 프로젝트 마감 기한 전 |
-| _SUCCESS_ |  프로젝트 금액 목표 이상 and (프로젝트 마감 or 크리에이터가 목표 달성 버튼 클릭 시) |
-| _FAILED_ |  프로젝트 금액 목표 미만 and (프로젝트 마감 or 크리에이터가 목표 달성 버튼 클릭 시) |
-| _CANCELED_ |  프로젝트 취소(COMPLETE인 경우 취소 불가능. PENDING에서는 CANCELED가 아닌 삭제만 가능) |
-| _COMPLETE_ |  본 영상이 올라온 경우(SUCCESS, FAILED인 경우에만 가능) |
+| _PENDING_ | 임시저장 상태 or 프로젝트가 생성되기 전 |
+| _OPEN_ | 프로젝트 생성 이후 or 프로젝트 마감 기한 전 |
+| _SUCCESS_ | 프로젝트 금액 목표 이상 and (프로젝트 마감 or 크리에이터가 목표 달성 버튼 클릭 시) |
+| _FAILED_ | 프로젝트 금액 목표 미만 and (프로젝트 마감 or 크리에이터가 목표 달성 버튼 클릭 시) |
+| _CANCELED_ | 프로젝트 취소(COMPLETE인 경우 취소 불가능. PENDING에서는 CANCELED가 아닌 삭제만 가능) |
+| _COMPLETE_ | 본 영상이 올라온 경우(SUCCESS, FAILED인 경우에만 가능) |
 
-*Example(Request)*
+_Example(Request)_
+
 ```
 {
     "status": "SUCCESS"
 }
 ```
 
-*Response*
+_Response_
 | http status code | 설명 |
 | --- | --- |
 | _202_ | 성공적으로 수정 되었습니다. |
 | _400_ | response body의 detail을 읽어보세요. |
 | _203_ | 권한이 없습니다. |
 
-
 ## 36. feed 메인 화면 topviews 조회 API
+
 ### GET /api/v1/feed/main/topviews
 
-*Request*
+_Request_
+
 ```
 필요한 정보가 없습니다.
 ```
 
-*Example(Response)*
+_Example(Response)_
+
 ```
 {
     "data": [
@@ -1209,21 +1258,23 @@ body: form-data =>  key: file   value: 파일선택
 }
 ```
 
-*Response*
+_Response_
 | http status code | 설명 |
 | --- | --- |
 | _200_ | 성공적으로 조회 되었습니다. |
-
 
 ## 37. feed 메인 화면 recommendations 조회 API
+
 ### GET /api/v1/feed/main/recommendations
 
-*Request*
+_Request_
+
 ```
 필요한 정보가 없습니다.
 ```
 
-*Example(Response)*
+_Example(Response)_
+
 ```
 {
     "data": [
@@ -1249,21 +1300,23 @@ body: form-data =>  key: file   value: 파일선택
 }
 ```
 
-*Response*
+_Response_
 | http status code | 설명 |
 | --- | --- |
 | _200_ | 성공적으로 조회 되었습니다. |
-
 
 ## 38. feed 메인 화면 topinvestments 조회 API
+
 ### GET /api/v1/feed/main/topinvestments
 
-*Request*
+_Request_
+
 ```
 필요한 정보가 없습니다.
 ```
 
-*Example(Response)*
+_Example(Response)_
+
 ```
 {
     "data": [
@@ -1289,21 +1342,22 @@ body: form-data =>  key: file   value: 파일선택
 }
 ```
 
-*Response*
+_Response_
 | http status code | 설명 |
 | --- | --- |
 | _200_ | 성공적으로 조회 되었습니다. |
 
-
 ## 39. 피드별 episode 조회 API
+
 ### GET /api/v1/common/episode/feed/int:feed_id
 
-**Response*
-| key | type  | 설명 |
+\*_Response_
+| key | type | 설명 |
 | --- | :---: | --- |
 | _data_ | `Episode Summury Object Array` | 요약된 Episode 정보를 담고있는 Object의 Array 입니다. |
 
-*Example(Response)*
+_Example(Response)_
+
 ```
 {
     "data": {
@@ -1322,11 +1376,12 @@ body: form-data =>  key: file   value: 파일선택
 }
 ```
 
-
 ## 40. episode 만들기 API
+
 ### POST /api/v1/common/episode/feed/int:feed_id
 
-*Request*
+_Request_
+
 ```
 | key | type   | 설명 |
 | --- | :----: | --- |
@@ -1337,23 +1392,24 @@ body: form-data =>  key: file   value: 파일선택
 | _content_ | `String` | 에피소드 상세 설명 입니다. |
 ```
 
-*Response*
+_Response_
 | http status code | 설명 |
 | --- | --- |
 | _201_ | 성공적으로 생성 되었습니다. |
 | _400_ | response body의 detail을 읽어보세요. |
 | _403_ | 권한이 없습니다. 본인의 feed가 아닙니다. |
 
-
 ## 41. episode 조회 API
+
 ### GET /api/v1/common/episode/int:episode_id
 
-**Response*
-| key | type  | 설명 |
+\*_Response_
+| key | type | 설명 |
 | --- | :---: | --- |
 | _data_ | `Episode Summury Object Array` | 요약된 Episode 정보를 담고있는 Object의 Array 입니다. |
 
-*Example(Response)*
+_Example(Response)_
+
 ```
 {
     "data": [
@@ -1368,7 +1424,7 @@ body: form-data =>  key: file   value: 파일선택
         "feed": {
             "feed_id": 3,
             "content": "프로젝트 상세 설명",
-            "thumbnail_image_url": "https://cdn.wantu.io/video/thumb-2022-12-15-322438.jpg",
+            "thumbnail_image_url": "https://cdn.jackpotcast.io/video/thumb-2022-12-15-322438.jpg",
             "teaser_url": "https://img.youtube.com/vi/rIfJrhfJadk/0.jpg",
             "created_at": "2022-11-29T01:51:47.502029",
             "updated_at": "2022-11-29T01:51:47.502054",
@@ -1401,11 +1457,12 @@ body: form-data =>  key: file   value: 파일선택
 }
 ```
 
-
 ## 42. episode 수정 API
+
 ### PUT /api/v1/common/episode/int:episode_id
 
-*Request*
+_Request_
+
 ```
 | key | type   | 설명 |
 | --- | :----: | --- |
@@ -1416,34 +1473,35 @@ body: form-data =>  key: file   value: 파일선택
 | _content_ | `String` | 에피소드 상세 설명 입니다. |
 ```
 
-*Response*
+_Response_
 | http status code | 설명 |
 | --- | --- |
 | _201_ | 성공적으로 생성 되었습니다. |
 | _400_ | response body의 detail을 읽어보세요. |
 | _403_ | 권한이 없습니다. 본인의 feed가 아닙니다. |
 
-
 ## 43. episode 삭제 API
+
 ### DELETE /api/v1/common/episode/int:episode_id
 
-*Response*
+_Response_
 | http status code | 설명 |
 | --- | --- |
 | _202_ | 성공적으로 삭제 되었습니다. |
 | _400_ | response body의 detail을 읽어보세요. |
 | _403_ | 권한이 없습니다. 자신이 만든 게시글이 아닙니다. |
 
-
 ## 44. event 가져오기 API
+
 ### GET /api/v1/common/event
 
-*Response*
-| key | type  | 설명 |
+_Response_
+| key | type | 설명 |
 | --- | :---: | --- |
 | _data_ | `Event Summury Object Array` | 요약된 Event 정보를 담고있는 Object의 Array 입니다. |
 
-*Example(Response)*
+_Example(Response)_
+
 ```
 {
     "data": [
@@ -1463,11 +1521,12 @@ body: form-data =>  key: file   value: 파일선택
 }
 ```
 
-
 ## 45. event 생성 API
+
 ### POST /api/v1/common/event
 
-*Request*
+_Request_
+
 ```
 | key | type   | 설명 |
 | --- | :----: | --- |
@@ -1479,7 +1538,8 @@ body: form-data =>  key: file   value: 파일선택
 | _end_at_ | `String` | 포인트 종료 날짜와 시간 입니다. `yyyy-mm-dd hh:mm:ss` 형식입니다. |
 ```
 
-*Example(Request)*
+_Example(Request)_
+
 ```
 {
     "type": "signup",
@@ -1491,23 +1551,24 @@ body: form-data =>  key: file   value: 파일선택
 }
 ```
 
-*Response*
+_Response_
 | http status code | 설명 |
 | --- | --- |
 | _201_ | 성공적으로 생성 되었습니다. |
 | _400_ | response body의 detail을 읽어보세요. |
 | _403_ | 권한이 없습니다. |
 
-
 ## 46. event 상세 API
+
 ### GET /api/v1/common/event/int:event_id
 
-*Response*
-| key | type  | 설명 |
+_Response_
+| key | type | 설명 |
 | --- | :---: | --- |
 | _data_ | `Event Summury Object Array` | 요약된 Event 정보를 담고있는 Object의 Array 입니다. |
 
-*Example(Response)*
+_Example(Response)_
+
 ```
 {
     "data": [
@@ -1527,11 +1588,12 @@ body: form-data =>  key: file   value: 파일선택
 }
 ```
 
-
 ## 47. event 수정 API
+
 ### PUT /api/v1/common/event/int:episode_id
 
-*Request*
+_Request_
+
 ```
 | key | type   | 설명 |
 | --- | :----: | --- |
@@ -1544,7 +1606,8 @@ body: form-data =>  key: file   value: 파일선택
 | _end_at_ | `String` | 포인트 종료 날짜와 시간 입니다. `yyyy-mm-dd hh:mm:ss` 형식입니다. |
 ```
 
-*Example(Request)*
+_Example(Request)_
+
 ```
 {
     "type": "signup",
@@ -1557,23 +1620,24 @@ body: form-data =>  key: file   value: 파일선택
 }
 ```
 
-*Response*
+_Response_
 | http status code | 설명 |
 | --- | --- |
 | _201_ | 성공적으로 수정 되었습니다. |
 | _400_ | response body의 detail을 읽어보세요. |
 | _403_ | 권한이 없습니다. |
 
-
 ## 48. 유저 point 리스트 가져오기 API
+
 ### GET /api/v1/common/point/int:user_id
 
-*Response*
-| key | type  | 설명 |
+_Response_
+| key | type | 설명 |
 | --- | :---: | --- |
 | _data_ | `Point Summury Object Array` | 요약된 Point 정보를 담고있는 Object의 Array 입니다. |
 
-*Example(Response)*
+_Example(Response)_
+
 ```
 {
     "data": {
@@ -1591,21 +1655,22 @@ body: form-data =>  key: file   value: 파일선택
 }
 ```
 
-
 ## 49. 유저 point 부여 API
+
 ### POST /api/v1/common/point/int:user_id
 
-*Request*
-| key | type   | 설명 |
+_Request_
+| key | type | 설명 |
 | --- | :----: | --- |
 | _point_ | `Integer` | 부여 point 입니다. |
 | _type_ | `String` | 이벤트로 쌓인 포인트인지, 영상 시청으로 쌓인 포인트인지 구분 입니다. |
-| _type_id_ | `String` | 이벤트면 event_id, 레퍼럴이면 feed_id 혹은 episode_id 입니다. |
-| _status_ | `String` | 적립인지, 사용인지 구분 입니다. |
+| _type_id_ | `String` | 이벤트면 event*id, 레퍼럴이면 feed_id 혹은 episode_id 입니다. |
+| \_status* | `String` | 적립인지, 사용인지 구분 입니다. |
 | _start_at_ | `String` | 포인트 시작 날짜와 시간 입니다. `yyyy-mm-dd hh:mm:ss` 형식입니다. |
 | _end_at_ | `String` | 포인트 종료 날짜와 시간 입니다. `yyyy-mm-dd hh:mm:ss` 형식입니다. |
 
-*Example(Request)*
+_Example(Request)_
+
 ```
 {
     "point": 1000,
@@ -1617,33 +1682,35 @@ body: form-data =>  key: file   value: 파일선택
 }
 ```
 
-*Response*
+_Response_
 | http status code | 설명 |
 | --- | --- |
 | _201_ | 성공적으로 생성 되었습니다. |
 | _400_ | response body의 detail을 읽어보세요. |
 | _403_ | 권한이 없습니다. |
 
-
 ## 50. 커뮤니티 리스트 보기 API
+
 ### GET /api/v1/common/community
 
-*Request*
-| key | type   | 설명 |
+_Request_
+| key | type | 설명 |
 | --- | :----: | --- |
 | _feed_id_ | `Integer` | 댓글리스트를 보고싶은 Feed id를 입력합니다. |
 
-*Example(Request)*
+_Example(Request)_
+
 ```
 /api/v1/common/community?feed_id=1
 ```
 
-*Response*
-| key | type  | 설명 |
+_Response_
+| key | type | 설명 |
 | --- | :---: | --- |
 | _data_ | `Community Object Array` | Community 정보를 담고있는 Object의 Array 입니다. |
 
-*Example(Response)*
+_Example(Response)_
+
 ```
 {
     "data": [
@@ -1668,15 +1735,17 @@ body: form-data =>  key: file   value: 파일선택
 ```
 
 ## 51. 커뮤니티 글 추가 API
+
 ### POST /api/v1/common/community
 
-*Request*
-| key | type   | 설명 |
+_Request_
+| key | type | 설명 |
 | --- | :----: | --- |
 | _feed_id_ | `Integer` | 댓글 달고싶은 Feed id를 입력합니다. |
 | _text_ | `String` | 추가하려는 댓글 입니다. |
 
-*Example(Request)*
+_Example(Request)_
+
 ```
 {
     "feed_id": 1,
@@ -1684,66 +1753,70 @@ body: form-data =>  key: file   value: 파일선택
 }
 ```
 
-*Response*
+_Response_
 | http status code | 설명 |
 | --- | --- |
 | _201_ | 성공적으로 생성 되었습니다. |
 | _400_ | response body의 detail을 읽어보세요. |
 | _403_ | 권한이 없습니다. 자신이 만든 피드가 아닙니다. |
 
-
 ## 52. 커뮤니티 글 수정 API
+
 ### PUT /api/v1/common/community/int:community_id
 
-*Request*
-| key | type   | 설명 |
+_Request_
+| key | type | 설명 |
 | --- | :----: | --- |
 | _text_ | `String` | 수정된 문구 입니다. |
 
-*Example(Request)*
+_Example(Request)_
+
 ```
 {
 	"text": "edit community"
 }
 ```
 
-*Response*
+_Response_
 | http status code | 설명 |
 | --- | --- |
 | _202_ | 성공적으로 수정 되었습니다. |
 | _403_ | 권한이 없습니다. 자신이 만든 커뮤니티 글이 아닙니다. |
 
-
 ## 53. 커뮤니티 글 삭제 API
+
 ### DELETE /api/v1/common/community/int:community_id
 
-*Request*
+_Request_
+
 ```
 필요한 정보가 없습니다.
 ```
 
-*Response*
+_Response_
 | http status code | 설명 |
 | --- | --- |
 | _202_ | 성공적으로 삭제 되었습니다. |
 | _403_ | 권한이 없습니다. 자신이 만든 커뮤니티 글이 아닙니다. |
 
-
 ## 54. 커뮤니티 댓글 리스트 보기 API
+
 ### GET /api/v1/common/community/int:community_id/reply
 
-*Example(Request)*
+_Example(Request)_
+
 ```
 /api/v1/common/community/5/reply
 ```
 
-*Response*
-| key | type  | 설명 |
+_Response_
+| key | type | 설명 |
 | --- | :---: | --- |2r3
 | _data_ | `Reply Object Array` | Reply 정보를 담고있는 Object의 Array 입니다. |
 | _total_ | `Integer` | pagenation을 위한 전체 개수입니다. |
 
-*Example(Response)*
+_Example(Response)_
+
 ```
 {
     "data": [
@@ -1783,76 +1856,79 @@ body: form-data =>  key: file   value: 파일선택
 }
 ```
 
-*Response*
+_Response_
 | http status code | 설명 |
 | --- | --- |
 | _200_ | 성공적으로 조회 되었습니다. |
 
-
 ## 55. 커뮤니티 댓글 추가 API
+
 ### POST /api/v1/common/community/int:community_id/reply
 
-*Request*
-| key | type   | 설명 |
+_Request_
+| key | type | 설명 |
 | --- | :----: | --- |
 | _text_ | `String` | 추가하려는 대댓글 입니다. |
 
-*Example(Request)*
+_Example(Request)_
+
 ```
 {
     "text": "community reply1"
 }
 ```
 
-*Response*
+_Response_
 | http status code | 설명 |
 | --- | --- |
 | _201_ | 성공적으로 생성 되었습니다. |
 | _400_ | response body의 detail을 읽어보세요. |
 
-
 ## 56. 커뮤니티 댓글 수정 API
+
 ### PUT /api/v1/common/community/int:community_id/reply/int:reply_id
 
-*Request*
-| key | type   | 설명 |
+_Request_
+| key | type | 설명 |
 | --- | :----: | --- |
 | _text_ | `String` | 수정된 문구 입니다. |
 
-*Example(Request)*
+_Example(Request)_
+
 ```
 {
 	"text": "edit community reply"
 }
 ```
 
-*Response*
+_Response_
 | http status code | 설명 |
 | --- | --- |
 | _202_ | 성공적으로 수정 되었습니다. |
 | _400_ | response body의 detail을 읽어보세요. |
 
-
 ## 57. 커뮤니티 댓글 삭제 API
+
 ### DELETE /api/v1/common/community/int:community_id/reply/int:reply_id
 
-*Request*
+_Request_
+
 ```
 필요한 정보가 없습니다.
 ```
 
-*Response*
+_Response_
 | http status code | 설명 |
 | --- | --- |
 | _202_ | 성공적으로 삭제되었습니다. |
 | _400_ | response body의 detail을 읽어보세요. |
 
-
 ## 58. Report 생성 API
+
 ### POST /api/v1/common/report
 
-*Request*
-| key | type   | 설명 |
+_Request_
+| key | type | 설명 |
 | --- | :----: | --- |
 | _feed_id_ `(optional)` | `Integer` | 신고하려는 feed의 id 입니다. |
 | _episode_id_ `(optional)` | `Integer` | 신고하려는 episode의 id 입니다. |
@@ -1860,7 +1936,8 @@ body: form-data =>  key: file   value: 파일선택
 | _reply_id_ `(optional)` | `Integer` | 신고하려는 reply의 id 입니다. |
 | _nested_reply_id_ `(optional)` | `Integer` | 신고하려는 nested_reply의 id 입니다. |
 
-*Example(Request)*
+_Example(Request)_
+
 ```
 {
     "feed_id": 1,
@@ -1868,7 +1945,7 @@ body: form-data =>  key: file   value: 파일선택
 }
 ```
 
-*Response*
+_Response_
 | http status code | 설명 |
 | --- | --- |
 | _201_ | 성공적으로 생성 되었습니다. |

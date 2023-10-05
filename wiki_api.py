@@ -1,5 +1,5 @@
 import wikipediaapi
-wiki = wikipediaapi.Wikipedia('Wantu (yacaeh@gmail.com)','ko')
+wiki = wikipediaapi.Wikipedia('jackpotcast (yacaeh@gmail.com)','ko')
 import re
 
 query = "우마게임"
