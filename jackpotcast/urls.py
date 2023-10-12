@@ -4,6 +4,11 @@ from movies.views import movie_upload_from_csv, channel_upload_from_csv, episode
 import debug_toolbar
 
 urlpatterns = [
+    # path('api/v1/', include('jackpotcast.urls')),
+    path('api/v1/users', include('users.urls')),
+    path('api/v1/movies', include('movies.urls')),
+    path('api/v1/banners', BannerView.as_view()),
+    path('api/v1/notices', NoticeView.as_view()),
     path('users', include('users.urls')),
     path("movies", include("movies.urls")),
     path('admin/clearcache/', include('clearcache.urls')),
